@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.dagger.plugin)
 }
 
 android {
@@ -33,16 +35,45 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
 
+    // Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+
+    // Memory Leak
+    debugImplementation(libs.leakcanary.android)
+
+    // Unit Test
+    testImplementation(libs.android.test.core.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockito)
+    testImplementation(libs.coroutines.test)
+
+    // Instrument Test
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.room.testing)
+
+    // DI
+    implementation(libs.google.hilt)
+    kapt(libs.google.hilt.compiler)
+    kapt(libs.hilt.compiler)
+
+    // Local
+    implementation(libs.datastore.preferences)
+    implementation(libs.androidx.room)
+    kapt(libs.androidx.room.compiler)
 }
