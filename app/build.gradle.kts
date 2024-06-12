@@ -67,11 +67,15 @@ dependencies {
     testImplementation(libs.google.truth)
     testImplementation(libs.mockito)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.androidx.arch.core)
 
     // Instrument Test
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.google.truth)
+    androidTestImplementation(libs.androidx.arch.core)
 
     // DI
     implementation(libs.google.hilt)
