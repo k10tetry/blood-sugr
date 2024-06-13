@@ -55,5 +55,13 @@ class BloodGlucoseUseCaseTest {
 
         Truth.assertThat(result.round()).isEqualTo(9.53)
     }
+    
+    @Test
+    fun `Get average blood glucose in case of empty data`() = runTest(UnconfinedTestDispatcher()) {
+        localRepository.clear()
+        val result = getAverageBloodGlucoseUseCase(BloodGlucoseUnits.MILLI_MOLES_LTR)
+
+        Truth.assertThat(result.round()).isEqualTo(0.0)
+    }
 
 }

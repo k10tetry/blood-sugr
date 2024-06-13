@@ -25,4 +25,8 @@ class FakeLocalRepositoryImpl : LocalRepository {
     override fun getBloodGlucoseUnit(): Flow<BloodGlucoseUnits> =
         flow { emit(savedBloodGlucoseUnits) }
 
+    fun clear() {
+        savedBloodGlucoseList.clear()
+    }
+
 }
