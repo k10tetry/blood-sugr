@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Xchange.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/primaryColor</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/dimen_42sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Xchange.SubTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/primaryColor</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+</resources>

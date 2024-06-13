@@ -25,8 +25,7 @@ class ConvertBloodGlucoseUseCaseTest {
     @Test
     fun `Convert blood glucose from mmol to mmol`() {
         val from = Pair(10.0, BloodGlucoseUnits.MILLI_MOLES_LTR)
-        val result = Pair(10.0, BloodGlucoseUnits.MILLI_MOLES_LTR)
-        Truth.assertThat(convertBloodGlucoseUseCase(from, result.second)).isEqualTo(result)
+        Truth.assertThat(convertBloodGlucoseUseCase(from, from.second)).isEqualTo(from)
     }
 
 }

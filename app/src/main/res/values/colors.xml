@@ -6,11 +6,13 @@
     <color name="secondaryVariantColor">#130501</color>
 
     <color name="backgroundColor">#ffffff</color>
-    <color name="surfaceColor">#f8f9fa</color>
+    <color name="surfaceColor">#f4f4f4</color>
 
     <color name="onPrimaryColor">#ffffff</color>
     <color name="onSecondaryColor">#ffffff</color>
 
     <color name="onBackgroundColor">#130501</color>
     <color name="onSurfaceColor">#130501</color>
+
+    <color name="greyColor">#6C757D</color>
 </resources>

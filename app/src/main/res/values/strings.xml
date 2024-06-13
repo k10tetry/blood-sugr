@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Blood Sugr</string>
+    <string name="text_sub_heading">A logbook for blood glucose measurements</string>
+    <string name="mmol_l">mmol/L</string>
+    <string name="mg_dl">mg/dL</string>
+    <string name="average">Average</string>
+    <string name="network_connection">Network Connection!</string>
+    <string name="parsing_error">Parsing Error!</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="_0_0">0.0</string>
 </resources>
