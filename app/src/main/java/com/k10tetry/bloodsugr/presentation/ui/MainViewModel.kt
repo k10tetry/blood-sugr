@@ -3,20 +3,19 @@ package com.k10tetry.bloodsugr.presentation.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.k10tetry.bloodsugr.common.ErrorType
+import com.k10tetry.bloodsugr.common.SugrDispatcher
 import com.k10tetry.bloodsugr.domain.model.BloodGlucoseModel
 import com.k10tetry.bloodsugr.domain.model.BloodGlucoseUnits
-import com.k10tetry.bloodsugr.domain.usecase.ConvertBloodGlucoseUseCase
-import com.k10tetry.bloodsugr.domain.usecase.GetAverageBloodGlucoseUseCase
-import com.k10tetry.bloodsugr.domain.usecase.GetBloodGlucoseListUseCase
-import com.k10tetry.bloodsugr.domain.usecase.GetBloodGlucoseUnitUseCase
-import com.k10tetry.bloodsugr.domain.usecase.SaveBloodGlucoseUnitUseCase
-import com.k10tetry.bloodsugr.domain.usecase.SaveBloodGlucoseUseCase
+import com.k10tetry.bloodsugr.domain.usecase.MainUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import java.io.IOException
@@ -24,12 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val saveBloodGlucoseUnitUseCase: SaveBloodGlucoseUnitUseCase,
-    private val getBloodGlucoseUnitUseCase: GetBloodGlucoseUnitUseCase,
-    private val getAverageBloodGlucoseUseCase: GetAverageBloodGlucoseUseCase,
-    private val convertBloodGlucoseUseCase: ConvertBloodGlucoseUseCase,
-    private val saveBloodGlucoseUseCase: SaveBloodGlucoseUseCase,
-    private val getBloodGlucoseListUseCase: GetBloodGlucoseListUseCase
+    private val mainUseCase: MainUseCase, private val dispatcher: SugrDispatcher
 ) : ViewModel() {
 
     private val _averageState = MutableStateFlow(0.0)
@@ -47,24 +41,22 @@ class MainViewModel @Inject constructor(
     private val _toastState = MutableSharedFlow<ErrorType>()
     val toastState = _toastState.asSharedFlow()
 
+    var previous = _unitState.value
+
     init {
-        viewModelScope.launch {
+        mainUseCase.getUnit().catch {
+            _toastState.emit(getErrorType(it))
+        }.onEach {
+            previous = _unitState.value
+            _unitState.value = it
+            _averageState.value = mainUseCase.getAverage(it)
+        }.flowOn(dispatcher.default).launchIn(viewModelScope)
 
-            launch {
-                getBloodGlucoseUnitUseCase().catch {
-                    _toastState.emit(getErrorType(it))
-                }.collect {
-                    _unitState.value = it
-                    _averageState.value = getAverageBloodGlucoseUseCase(it)
-                }
-            }
-
-            launch {
-                getBloodGlucoseListUseCase().collect {
-                    _measurementListState.value = it
-                }
-            }
-        }
+        mainUseCase.getBloodGlucoseList().catch {
+            _toastState.emit(getErrorType(it))
+        }.onEach {
+            _measurementListState.value = it
+        }.flowOn(dispatcher.main).launchIn(viewModelScope)
     }
 
     private fun getErrorType(error: Throwable) = when (error) {
@@ -75,27 +67,22 @@ class MainViewModel @Inject constructor(
 
     fun saveUnits(units: BloodGlucoseUnits) {
         viewModelScope.launch {
-            saveBloodGlucoseUnitUseCase(units)
+            mainUseCase.saveUnit(units)
         }
     }
 
-    fun convertInputMeasurement(text: String?, unit: BloodGlucoseUnits) {
-        viewModelScope.launch {
-
-            val from = when (unit) {
-                BloodGlucoseUnits.MILLI_MOLES_LTR -> BloodGlucoseUnits.MILLI_GRAM_DL
-                BloodGlucoseUnits.MILLI_GRAM_DL -> BloodGlucoseUnits.MILLI_MOLES_LTR
-            }
-
-            val result = convertBloodGlucoseUseCase(Pair(text?.toDoubleOrNull() ?: 0.0, from), unit)
+    fun convertInputMeasurement(inputMeasurement: Double, unit: BloodGlucoseUnits) {
+        viewModelScope.launch(dispatcher.default) {
+            val result = mainUseCase.convert(Pair(inputMeasurement, previous), unit)
             _inputState.value = result.first
         }
     }
 
-    fun saveMeasurement(model: BloodGlucoseModel) {
-        viewModelScope.launch {
-            saveBloodGlucoseUseCase(model)
-            _averageState.value = getAverageBloodGlucoseUseCase(model.units)
+    fun saveMeasurement(measurement: Double, unit: BloodGlucoseUnits, timeInMillis: Long) {
+        viewModelScope.launch(dispatcher.default) {
+            val model = BloodGlucoseModel(measurement, unit, timeInMillis)
+            mainUseCase.saveBloodGlucose(model)
+            _averageState.value = mainUseCase.getAverage(model.units)
         }
     }
 

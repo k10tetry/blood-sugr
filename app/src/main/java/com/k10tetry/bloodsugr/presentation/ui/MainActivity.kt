@@ -18,7 +18,6 @@ import com.k10tetry.bloodsugr.R
 import com.k10tetry.bloodsugr.common.ErrorType
 import com.k10tetry.bloodsugr.common.round
 import com.k10tetry.bloodsugr.databinding.ActivityMainBinding
-import com.k10tetry.bloodsugr.domain.model.BloodGlucoseModel
 import com.k10tetry.bloodsugr.domain.model.BloodGlucoseUnits
 import com.k10tetry.bloodsugr.presentation.utils.ItemDecorator
 import com.k10tetry.bloodsugr.presentation.utils.hideKeyboard
@@ -128,7 +127,10 @@ class MainActivity : AppCompatActivity() {
             binding.textViewUnitLabel.text = it.units
             binding.textViewUnits.text = it.units
 
-            viewModel.convertInputMeasurement(binding.editTextMeasurement.text?.toString(), it)
+            binding.editTextMeasurement.text?.toString()?.toDoubleOrNull()?.let { input ->
+                viewModel.convertInputMeasurement(input, it)
+            }
+
         }
     }
 
@@ -157,20 +159,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickSave() {
         binding.buttonSave.setOnClickListener {
-            isAddOperation = true
 
-            val unit = when (binding.radioGroup.checkedRadioButtonId) {
-                binding.radioMg.id -> BloodGlucoseUnits.MILLI_GRAM_DL
-                binding.radioMmol.id -> BloodGlucoseUnits.MILLI_MOLES_LTR
-                else -> BloodGlucoseUnits.MILLI_GRAM_DL
+            if (binding.editTextMeasurement.text?.isEmpty() == true) {
+                return@setOnClickListener
             }
 
-            val bloodGlucoseModel = BloodGlucoseModel(
-                binding.editTextMeasurement.text?.toString()?.toDoubleOrNull() ?: 0.0,
-                unit,
-                Calendar.getInstance().timeInMillis
-            )
-            viewModel.saveMeasurement(bloodGlucoseModel)
+            if (isAddOperation.not()) {
+                isAddOperation = true
+            }
+
+            binding.editTextMeasurement.text?.let {
+                val measurement = it.toString().toDoubleOrNull() ?: 0.0
+                val timeInMillis = Calendar.getInstance().timeInMillis
+                viewModel.saveMeasurement(measurement, viewModel.unitState.value, timeInMillis)
+            }
         }
     }
 

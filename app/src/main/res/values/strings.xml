@@ -8,4 +8,5 @@
     <string name="parsing_error">Parsing Error!</string>
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="_0_0">0.0</string>
+    <string name="measurement_units">Measurement Units:</string>
 </resources>
