@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.androidx.espresso.contrib)
 
     // Memory Leak
     debugImplementation(libs.leakcanary.android)
@@ -76,6 +77,9 @@ dependencies {
     androidTestImplementation(libs.coroutines.test)
     androidTestImplementation(libs.google.truth)
     androidTestImplementation(libs.androidx.arch.core)
+    androidTestImplementation(libs.android.test.core.ktx)
+    androidTestImplementation(libs.android.test.junit.ktx)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // DI
     implementation(libs.google.hilt)

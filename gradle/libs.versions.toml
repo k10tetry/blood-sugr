@@ -11,17 +11,19 @@ material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
 hilt = "2.49"
-lifecycleRuntimeKtx = "2.8.1"
+lifecycleRuntimeKtx = "2.8.2"
 datastore = "1.1.1"
 leakcanary = "2.14"
 googleTruth = "1.1.3"
 mockito = "5.12.0"
 androidTestoreKtxVersion = "1.5.0"
+testJunitKtx = "1.1.5"
 coroutinesTest = "1.8.1"
 hiltCompiler = "1.2.0"
 runner = "1.5.2"
 room = "2.6.1"
 archCoreTesting = "2.2.0"
+espressoContrib = "3.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,12 +45,14 @@ leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-and
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "googleTruth" }
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 android-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidTestoreKtxVersion" }
+android-test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "testJunitKtx" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 androidx-arch-core = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCoreTesting" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
