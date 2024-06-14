@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
     private val _averageState = MutableStateFlow(0.0)
     val averageState = _averageState.asStateFlow()
 
-    private val _unitState = MutableStateFlow(BloodGlucoseUnits.MILLI_GRAM_DL)
+    private val _unitState = MutableStateFlow(BloodGlucoseUnits.MILLI_MOLES_LTR)
     val unitState = _unitState.asStateFlow()
 
     private val _inputState = MutableStateFlow(0.0)
@@ -41,9 +41,9 @@ class MainViewModel @Inject constructor(
     private val _toastState = MutableSharedFlow<ErrorType>()
     val toastState = _toastState.asSharedFlow()
 
-    var previous = _unitState.value
+    private var previous = _unitState.value
 
-    init {
+    fun initialize() {
         mainUseCase.getUnit().catch {
             _toastState.emit(getErrorType(it))
         }.onEach {

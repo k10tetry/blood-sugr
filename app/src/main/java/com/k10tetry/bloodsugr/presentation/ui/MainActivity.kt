@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         initObservers()
+
+        viewModel.initialize()
     }
 
     private fun initObservers() {
