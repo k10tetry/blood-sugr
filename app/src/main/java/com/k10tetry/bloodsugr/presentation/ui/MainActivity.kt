@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
             binding.textViewHistory.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
 
             if (isAddOperation) {
+                isAddOperation = false
                 binding.editTextMeasurement.run {
                     clearFocus()
                     this.text = null

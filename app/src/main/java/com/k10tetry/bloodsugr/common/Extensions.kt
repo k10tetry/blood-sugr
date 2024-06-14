@@ -31,7 +31,7 @@ fun Long.milliToDay(): String {
 }
 
 fun Int.toDays(): String {
-    return if (this in 0..6) {
+    return if (this in 0..7) {
         val day = Days.entries[this - 1].name
         day.substring(0, 1) + day.substring(1).lowercase()
     } else {
