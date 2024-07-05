@@ -1,6 +1,7 @@
 # Blood Sugr - Track Blood Glucose Level 🩸
 
-[![platform](https://img.shields.io/badge/Platform-Android-blue.svg)](https://www.android.com)
+[![Platform](https://img.shields.io/badge/Platform-Android-blue.svg)](https://www.android.com)
+[![Platform](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://www.android.com)
 [![API](https://img.shields.io/badge/API-24%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![GitHub license](https://img.shields.io/badge/MIT-License-blue.svg)](LICENSE)
 ![GitHub stars](https://img.shields.io/github/stars/k10tetry/blood-sugr)
